@@ -1,0 +1,51 @@
+/*Query 1-Query used for first Insight:Total AmountSpent based on country.*/
+
+SELECT SUM(total),country 
+FROM customer a,Invoice b 
+WHERE a.customerid= b.customerid
+GROUP BY country;
+
+
+/*Query 2- second insight:Total amount spent in USD for each Artist.*/
+
+SELECT DISTINCT f.name,sum(c.unitprice)
+AS AmountSpent 
+FROM Customer a,Invoice b,InvoiceLine c,Track d,Album e,Artist f
+WHERE a.Customerid=b.Customerid 
+AND b.Invoiceid=c.Invoiceid 
+AND c.Trackid=d.trackid 
+AND d.Albumid=e.Albumid 
+AND e.Artistid=f.Artistid
+GROUP BY f.name 
+ORDER BY Amountspent DESC;
+
+
+
+/*Query 3-third insight: Total amount spent only on artist name Iron Maiden*/
+
+SELECT DISTINCT f.name,sum(c.unitprice) 
+AS AmountSpent,a.Customerid,a.firstname,a.lastname 
+FROM Customer a,Invoice b,InvoiceLine c,Track d,Album e,Artist f
+WHERE a.Customerid=b.Customerid 
+AND b.Invoiceid=c.Invoiceid 
+AND c.Trackid=d.trackid AND d.Albumid=e.Albumid 
+AND e.Artistid=f.Artistid
+AND f.name = 'Iron Maiden'
+GROUP BY f.name,a.Customerid,a.firstname,a.lastname 
+ORDER BY AmountSpent DESC;
+
+
+/*Query 4-Fourth insight: Number of tracks per artist having genre rock only.*/
+
+SELECT DISTINCT a.Artistid,a.name,count(c.name) 
+AS Songs 
+FROM Artist a,Album b,Track c,Genre d 
+WHERE a.Artistid=b.Artistid 
+AND b.Albumid=c.Albumid 
+AND c.Genreid=d.Genreid 
+AND d.name = 'Rock'
+GROUP BY a.Artistid,a.name 
+ORDER BY Songs DESC limit 10;
+
+
+
